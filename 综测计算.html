@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>嘎嘎</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 20px;
+            
+        } 
+        h1, h2 {
+            text-align: center
+        }
+        .category {
+            margin-bottom: 50px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px; 
+        }
+
+        .item {
+            margin-bottom: 10px;
+        }
+        label {
+            display: inline-block;
+            width: 150px;
+        }
+        select, input {
+            width: 200px;
+            font-size: 20px;
+            margin-right: 30px;
+            border-radius: 2px;
+            border: none;
+        }
+        .score {
+            display: inline-block;
+            width: 30px;
+            text-align: right;
+            margin-left: 10px;
+        }
+        #total {
+            font-weight: bold;
+            font-size: 1.5em;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+    button {
+    padding: 5px 10px;
+    font-size: 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+        }
+    
+ button:hover {
+    background-color: #397e3c;
+}
+  
+.delete-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 7px;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: darkred;
+}
+
+button.delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.delete-button:hover {
+   background-color: darkred;
+}
+
+#exportBtn {
+    position: absolute;
+    top: 50px;
+    right: 100px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#exportBtn:hover {
+    background-color: #45a049;
+}
+
+#exportBtn[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    top: 100%;
+    right: 0;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 14px;
+    white-space: nowrap;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+#exportBtn[title]:hover::after {
+    opacity: 1;
+}
+
+body {
+    position: relative;
+}
+
+#background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://i0.hdslb.com/bfs/article/c90842fb5658432ff21954a35ab9d555b9e0794c.png@1256w_708h_!web-article-pic.avif');
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.4;
+    z-index: -1;
+}
+
+select {
+    appearance: none;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    color: #494848;
+    outline: none;
+}
+
+select:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+select:focus {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+li {
+    margin-bottom: 12px; /* 添加这一行 */
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  max-width: 400px;
+  text-align: center;
+  animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+  from {opacity: 0; transform: translateY(-50px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+.icon-container {
+  margin-bottom: 20px;
+}
+
+.warning-icon {
+  width: 64px;
+  height: 64px;
+  stroke: #ff9800;
+  animation: enhanced-pulse 1s ease-in-out infinite;
+}
+
+@keyframes enhanced-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.7;
+  }
+}
+
+.modal h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.modal p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.modal button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.modal button:hover {
+  background-color: #45a049;
+}
+
+ </style>
+</head>
+<body>
+
+    <div id="custom-alert" class="modal">
+        <div class="modal-content">
+          <div class="icon-container">
+            <div class="icon-container">
+                <svg class="warning-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+              </div>
+          </div>
+          <h2>警告提示</h2>
+          <p id="alert-message"></p>
+          <button id="alert-ok">确定</button>
+        </div>
+      </div>
+
+    <h1>综测辅助计算</h1>
+
+    <div id="studentName">
+        <label for="studentNameInput">学生姓名：</label>
+        <input type="text" id="studentNameInput" placeholder="输入学生姓名">
+        <button onclick="addStudentScore()">添加学生</button>
+    </div>
+
+    <div class="category" id="科技竞赛">
+        <div class="category-total">科技竞赛总分：<span id="科技竞赛Total"style="color: red;">0</span></div>
+        <h2>1. 科技竞赛</h2>
+        <div class="item">
+            <label for="scienceLevel">奖项级别：</label>
+            <select id="scienceLevel" onchange="updateScienceOptions(this)">
+                <option value="">无</option>
+                <option value="national">全国</option>
+                <option value="provincial">省级</option>
+                <option value="school">校级</option>
+                <option value="college">院级</option>
+            </select>
+            <select id="scienceAward" onchange="updateScore(this, 'science')">
+                <option value="0">无</option>
+            </select>
+            <span class="score">0</span>
+            <button onclick="addNewItem('科技竞赛')">添加新奖项</button>
+            <button class="delete-btn" onclick="deleteItem(this)" style="display:none;">删除</button>
+        </div>
+    </div>
+
+    <div class="category" id="文体竞赛">
+        <div class="category-total">文体竞赛总分：<span id="文体竞赛Total"style="color: red;">0</span></div>
+        <h2>2. 文体竞赛</h2>
+        <div class="item">
+            <label for="culturalLevel">奖项级别：</label>
+            <select id="culturalLevel" onchange="updateCulturalOptions(this)">
+                <option value="">无</option>
+                <option value="national">全国</option>
+                <option value="provincial">省级</option>
+                <option value="school">校级</option>
+                <option value="college">院级</option>
+            </select>
+            <select id="culturalAward" onchange="updateScore(this, 'cultural')">
+                <option value="0">无</option>
+            </select>
+            <span class="score">0</span>
+            <button onclick="addNewItem('文体竞赛')">添加新奖项</button>
+            <button class="delete-btn" onclick="deleteItem(this)" style="display:none;">删除</button>
+        </div>
+    </div>
+
+    <div class="category" id="实践创新">
+        <div class="category-total">实践创新总分：<span id="实践创新Total"style="color: red;">0</span></div>
+        <h2>3. 实践创新</h2>
+        <div class="item">
+            <label for="实践创新Type">类型：</label>
+            <select id="实践创新Type" onchange="update实践创新Options(this)">
+                <option value="">无</option>
+                <option value="patent">发明专利</option>
+                <option value="research">科研成果</option>
+                <option value="paper">学术论文</option>
+            </select>
+            <select id="实践创新Detail" onchange="updateScore(this, '实践创新')">
+                <option value="0">无</option>
+            </select>
+            <span class="score">0</span>
+            <button onclick="addNewItem('实践创新')">添加新项目</button>
+            <button class="delete-btn" onclick="deleteItem(this)" style="display:none;">删除</button>
+        </div>
+    </div>
+
+    <div class="category" id="人文素质">
+        <div class="category-total">人文素质总分：<span id="人文素质Total"style="color: red;">0</span></div>
+        <h2>4. 人文素质</h2>
+        <div class="item">
+            <label for="人文素质Type">类型：</label>
+            <select id="人文素质Type" onchange="update人文素质Options(this)">
+                <option value="">无</option>
+                <option value="computer">计算机技能</option>
+                <option value="english">英语技能</option>
+                <option value="professional">专业技能</option>
+            </select>
+            <select id="人文素质Detail" onchange="updateScore(this, '人文素质')">
+                <option value="0">无</option>
+            </select>
+            <span class="score">0</span>
+            <button onclick="addNewItem('人文素质')">添加新技能</button>
+            <button class="delete-btn" onclick="deleteItem(this)" style="display:none;">删除</button>
+        </div>
+    </div>
+    <div class="category" id="社会工作">
+        <div class="category-total">社会工作总分：<span id="社会工作Total"style="color: red;">0</span></div>
+        <h2>5. 社会工作</h2>
+        <div class="item">
+            <label for="社会工作Level">职务等级：</label>
+            <select id="社会工作Level" onchange="updateScore(this, '社会工作')">
+                <option value="0">无</option>
+                <option value="8">一类：校团委、学生会、社联、自律委员会正副职干部</option>
+                <option value="7">二类：其他校级学生组织正副职干部（含大学生艺术团、校青年志愿者协会、马克思主义理论读书社、易班工作站、大学生心理委员会、膳食委员会等）</option>
+                <option value="6">三类：校级学生组织部长级干部，学生党支部书记，各 社团、国旗护卫队正副职干部，二级学院团委、学生会正副 职干部</option>
+                <option value="5">四类：二级学院团委、学生会部长级干部，各班级班长、 团支部书记</option>
+                <option value="4">五类：其他干部（4分）</option>
+                <option value="3">五类：其他干部（3分）</option>
+                <option value="2">五类：其他干部（2分）</option>
+                <option value="1">五类：其他干部（1分）</option>
+            </select>
+            <span class="score">0</span>
+            <button onclick="addNewItem('社会工作')">添加新职务</button>
+            <button class="delete-btn" onclick="deleteItem(this)" style="display:none;">删除</button>
+        </div>
+    </div>
+
+    <div class="category" id="学生活动">
+        <div class="category-total">学生活动总分：<span id="学生活动Total"style="color: red;">0</span></div>
+        <h2>6. 学生活动</h2>
+        <div class="item">
+            <label for="activityLevel">活动等级：</label>
+            <select id="activityLevel" onchange="updateScore(this, '学生活动')">
+                <option value="0">无</option>
+                <option value="6">优秀（6分）</option>
+                <option value="5">优秀（5分）</option>
+                <option value="5">良好（5分）</option>
+                <option value="4">良好（4分）</option>
+                <option value="4">中等（4分）</option>
+                <option value="3">中等（3分）</option>
+                <option value="2">一般（2分）</option>
+                <option value="1">一般（1分）</option>
+                <option value="0">一般（0分）</option>
+            </select>
+            <span class="score">0</span>
+        </div>
+    </div>
+
+    <div class="category" id="荣誉加分">
+        <div class="category-total">荣誉加分总分：<span id="荣誉加分Total"style="color: red;">0</span></div>
+        <h2>7. 荣誉加分</h2>
+        <div class="item">
+            <label for="honorType">荣誉类型：</label>
+            <select id="honorType" onchange="updateHonorOptions(this)">
+                <option value="">无</option>
+                <option value="personal">个人荣誉</option>
+                <option value="collective">集体荣誉</option>
+            </select>
+            <select id="honorDetail" onchange="updateScore(this, '荣誉加分')">
+                <option value="0">无</option>
+            </select>
+            <span class="score">0</span>
+            <button onclick="addNewItem('荣誉加分')">添加新荣誉</button>
+            <button class="delete-btn" onclick="deleteItem(this)" style="display:none;">删除</button>
+        </div>
+    </div>
+
+    <div id="total">总分：0</div>
+    <div id="studentScores">
+        <h2>学生分数记录</h2>
+        <ul id="scoresList"></ul>
+    </div>
+    <textarea id="csvData" style="display:none;"></textarea>
+    <button id="exportBtn" title="直接导出打开有乱码，要鼠标右键点击文件，用“记事本”方式打开，然后存储格式选择“ANSI”，再打开就没问题了"onclick="exportCSV()">导出文件</button>
+    <div id="background-image"></div>
+    
+</body>
+<script>
+window.onload = function() {
+    if (!localStorage.getItem('warningShown')) {
+        localStorage.setItem('warningShown', 'true');
+    }
+    const modal = document.getElementById('custom-alert');
+    const message = document.getElementById('alert-message');
+    const okButton = document.getElementById('alert-ok');
+    
+    message.textContent = "在使用本界面之前，请使用者务必要熟知《学生手册》的分数计算规则，本界面的数据仅供参考，并不作为最终的学生数据呈现，请务必要自行或者与综测小组一起计算和验算，避免发生错误或者不必要的麻烦，用户在点击确认后代表已熟知并掌握规则，请注意！！";
+    
+    modal.style.display = 'block';
+    
+    const inputs = document.getElementsByTagName('input');
+    const buttons = document.getElementsByTagName('button');
+    
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].disabled = true;
+    }
+    
+    for (let i = 0; i < buttons.length; i++) {
+        if (buttons[i] !== okButton) {
+            buttons[i].disabled = true;
+        }
+    }
+    
+    okButton.onclick = function() {
+        modal.style.display = 'none';
+        
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].disabled = false;
+        }
+        
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].disabled = false;
+        }
+    }
+}
+
+const scienceScores = {
+    national: {一等奖: 10, 二等奖: 7, 三等奖: 5, 鼓励奖: 2},
+    provincial: {一等奖: 5, 二等奖: 3, 三等奖: 2, 鼓励奖: 1},
+    school: {一等奖: 3, 二等奖: 2, 三等奖: 1.5, 鼓励奖: 1},
+    college: {一等奖: 2, 二等奖: 1.5, 三等奖: 1, 鼓励奖: 0.5}
+};
+
+const 文体竞赛 = {
+    national: {一等奖: 7, 二等奖: 3, 三等奖: 2, 鼓励奖: 1},
+    provincial: {一等奖: 5, 二等奖: 2, 三等奖: 1.5, 鼓励奖: 0.75},
+    school: {一等奖: 3, 二等奖: 1.5, 三等奖: 1, 鼓励奖: 0.5},
+    college: {一等奖: 1.5, 二等奖: 1, 三等奖: 0.5, 鼓励奖: 0.25}
+};
+
+const 实践创新Scores = {
+    patent: {"国家发明专利": 20, "国家实用新型专利": 10, "外观设计专利": 10},
+    research: {"专家推荐": 4},
+    paper: {
+        "SCI/EI/CSSCI第一作者": 15, "SCI/EI/CSSCI第二作者": 4, "SCI/EI/CSSCI第三及后序作者": 2,
+        "国内核心期刊第一作者": 4, "国内核心期刊第二作者": 2, "国内核心期刊第三及后序作者": 1,
+        "其他期刊第一作者": 2, "其他期刊第二作者": 1, "其他期刊第三及后序作者": 0.5
+    }
+};
+
+const 人文素质Scores = {
+    computer: {"非计算机专业二级等级证书": 1},
+    english: {"非英语专业CET6": 2, "非英语专业CET4": 1, "英语专业专八": 2, "英语专业专四": 1},
+    professional: {"专业技能资格证书": 1}
+};
+
+const 荣誉加分Scores = {
+    personal: {
+        "全国三好、优干、优团干等": 10, "省级三好、优团干、优团等": 8, "校级三好、优干、优团干、优团等": 3, "院级三好、优干、优团干、优团等": 1,
+        "省级各类积极分子": 3, "校级各类积极分子": 1, "院级各类积极分子": 0.5
+    },
+    collective: {
+        "全国先进党、团支部、班集体主要负责人": 10,
+        "全国先进党、团支部、班集体其他负责人": 5,
+        "全国先进党、团支部、班集体一般成员": 3,
+        "全省先进党、团支部、班集体主要负责人": 6,
+        "全省先进党、团支部、班集体其他负责人": 3,
+        "全省先进党、团支部、班集体一般成员": 2,
+        "学校先进党、团支部、班集体主要负责人": 3,
+        "学校先进党、团支部、班集体其他负责人": 2,
+        "学校先进党、团支部、班集体一般成员": 1,
+        "学院先进党、团支部、班集体主要负责人": 2,
+        "学院先进党、团支部、班集体其他负责人": 1,
+        "学院先进党、团支部、班集体一般成员": 0.5,
+        "学校文明宿舍负责人": 1.5,
+        "学校文明宿舍成员": 1,
+        "学院文明宿舍负责人": 1,
+        "学院文明宿舍成员": 0.5
+    }
+};
+
+function deleteItem(button) {
+    var item = button.parentElement;
+    var category = item.parentElement;
+    var categoryId = category.id;
+    // 获取被删除项目的分数
+    var scoreToSubtract = parseFloat(item.querySelector('.score').textContent) || 0;
+    // 删除项目
+    item.remove();
+    // 更新类别总分
+    updateCategoryTotal(categoryId, -scoreToSubtract);
+    calculateTotal();
+}
+
+
+function updateCategoryTotal(categoryId, scoreChange = 0) {
+    var category = document.getElementById(categoryId);
+    var totalSpan = category.querySelector('.category-total span');
+    var currentTotal = parseFloat(totalSpan.textContent) || 0;
+    
+    // 如果提供了 scoreChange，使用它来更新总分
+    if (scoreChange !== 0) {
+        currentTotal += scoreChange;
+    } else {
+        // 否则，重新计算总分
+        var scores = category.querySelectorAll('.score');
+        currentTotal = Array.from(scores).reduce((sum, score) => sum + (parseFloat(score.textContent) || 0), 0);
+    }
+    
+    totalSpan.textContent = currentTotal;
+}
+function updateCompetitionOptions(levelSelect, scores) {
+    const level = levelSelect.value;
+    const awardSelect = levelSelect.nextElementSibling;
+    awardSelect.innerHTML = '<option value="0">无</option>';
+    if (level && scores[level]) {
+        for (const award in scores[level]) {
+            awardSelect.innerHTML += `<option value="${scores[level][award]}">${award}</option>`;
+        }
+    }
+}
+
+function update实践创新Options(typeSelect) {
+    const type = typeSelect.value;
+    const detailSelect = typeSelect.nextElementSibling;
+    detailSelect.innerHTML = '<option value="0">无</option>';
+    if (type && 实践创新Scores[type]) {
+        for (const detail in 实践创新Scores[type]) {
+            detailSelect.innerHTML += `<option value="${实践创新Scores[type][detail]}">${detail}</option>`;
+        }
+    }
+}
+
+function update人文素质Options(typeSelect) {
+    const type = typeSelect.value;
+    const detailSelect = typeSelect.nextElementSibling;
+    detailSelect.innerHTML = '<option value="0">无</option>';
+    if (type && 人文素质Scores[type]) {
+        for (const detail in 人文素质Scores[type]) {
+            detailSelect.innerHTML += `<option value="${人文素质Scores[type][detail]}">${detail}</option>`;
+        }
+    }
+}
+
+function updateHonorOptions(typeSelect) {
+    const type = typeSelect.value;
+    const detailSelect = typeSelect.nextElementSibling;
+    detailSelect.innerHTML = '<option value="0">无</option>';
+    if (type) {
+        for (const honor in 荣誉加分Scores[type]) {
+            detailSelect.innerHTML += `<option value="${荣誉加分Scores[type][honor]}">${honor}</option>`;
+        }
+    }
+    updateScore(detailSelect, '荣誉加分');
+}
+
+function updateScore(select) {
+    const scoreSpan = select.nextElementSibling;
+    scoreSpan.textContent = select.value;
+    calculateTotal();
+}
+
+function calculateTotal() {
+    let total = 0;
+    const categoryTotals = document.querySelectorAll('[id$="Total"]');
+    categoryTotals.forEach(categoryTotal => {
+        total += parseFloat(categoryTotal.textContent || 0);
+    });
+    document.getElementById('total').textContent = `总分：${total.toFixed(1)}`;
+}
+
+function addNewItem(categoryId) {
+    const category = document.getElementById(categoryId);
+    const newItem = category.querySelector('.item').cloneNode(true);
+    newItem.querySelectorAll('select').forEach(select => {
+        select.value = '';
+        newItem.querySelector('.delete-btn').style.display = 'inline-block';
+    });
+    newItem.querySelector('.score').textContent = '0';
+    category.appendChild(newItem);
+    updateTotal();
+}
+
+function exportCSV() {
+    const csvData = document.getElementById('csvData').value;
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', '学生分数汇总.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const categoryComments = {
+        '科技竞赛': '由学校组织参加的各级各类科技竞赛。',
+        '文体竞赛': '学校组织的各级各类英语、文化、艺术、体育类竞赛',
+        '实践创新': '高级人员专属区域',
+        '人文素质': '技能大合集，看就完啦！！！！',
+        '社会工作': '身兼多职的以最高项计分一次，社会工作得分均为学年工作得分，若工作时间为一学期，得分标准均减半。',
+        '学生活动': '优秀20%----良好30%----中等30%----一般----20%。',
+        '荣誉加分': '其它未涵盖的荣誉级别、发展性素质项目及特殊情况，由学院酌情加分，最高不超过2分。'
+    };
+
+    Object.keys(categoryComments).forEach(category => {
+        const categoryDiv = document.getElementById(category);
+        if (categoryDiv) {
+            const comment = document.createElement('p');
+            comment.textContent = categoryComments[category];
+            comment.style.fontSize = '1em';
+            comment.style.color = '#666';
+            comment.style.marginTop = '5px';
+            comment.style.fontStyle = 'italic';
+            
+            const titleElement = categoryDiv.firstElementChild;
+            if (titleElement) {
+                titleElement.insertAdjacentElement('afterend', comment);
+            } else {
+                categoryDiv.insertAdjacentElement('afterbegin', comment);
+            }
+        }
+    });
+});
+
+
+document.addEventListener('change', function(event) {
+    if (event.target.matches('#scienceLevel, #culturalLevel')) {
+        updateCompetitionOptions(event.target, event.target.id === 'scienceLevel' ? scienceScores : 文体竞赛);
+    } else if (event.target.matches('#scienceAward, #culturalAward, #实践创新Detail, #人文素质Detail, #社会工作Level, #activityLevel, #honorDetail')) {
+        updateScore(event.target);
+    } else if (event.target.matches('#实践创新Type')) {
+        update实践创新Options(event.target);
+    } else if (event.target.matches('#人文素质Type')) {
+        update人文素质Options(event.target);
+    } else if (event.target.matches('#honorType')) {
+        updateHonorOptions(event.target);
+    }
+});
+function calculateCategoryTotal(categoryId) {
+    let total = 0;
+    const scores = document.querySelectorAll(`#${categoryId} .score`);
+    scores.forEach(score => {
+        total += parseFloat(score.textContent || 0);
+    });
+    document.getElementById(`${categoryId}Total`).textContent = total.toFixed(1);
+}
+
+function calculateAllCategoryTotals() {
+    const categories = ['科技竞赛', '文体竞赛', '实践创新', '人文素质', '社会工作', '学生活动', '荣誉加分'];
+    categories.forEach(calculateCategoryTotal);
+}
+
+function resetAllMenus() {
+    document.querySelectorAll('select').forEach(select => {
+        select.selectedIndex = 0;
+        if (select.id === 'scienceLevel' || select.id === 'culturalLevel') {
+            updateCompetitionOptions(select, select.id === 'scienceLevel' ? scienceScores : 文体竞赛);
+        } else if (select.id === '实践创新Type') {
+            update实践创新Options(select);
+        } else if (select.id === '人文素质Type') {
+            update人文素质Options(select);
+        } else if (select.id === 'honorType') {
+            updateHonorOptions(select);
+        }
+    });
+    document.querySelectorAll('.score').forEach(score => {
+        score.textContent = '0';
+    });
+    calculateAllCategoryTotals();
+    calculateTotal();
+}
+
+function addStudentScore() {
+    const name = document.getElementById('studentNameInput').value;
+    if (!name) {
+        alert('请输入学生姓名');
+        return;
+    }
+    const total = document.getElementById('total').textContent;
+    const scoresList = document.getElementById('scoresList');
+    const li = document.createElement('li');
+
+    const categories = ['科技竞赛', '文体竞赛', '实践创新', '人文素质', '社会工作', '学生活动', '荣誉加分'];
+    const categoryScores = categories.map(category => {
+        return `${category}: ${document.getElementById(category + 'Total').textContent}`;
+    });
+
+    li.textContent = `${name}: ${total} (${categoryScores.join('——')})`;
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = '删除';
+    deleteButton.classList.add('delete-button');
+
+    deleteButton.onclick = function() {
+        li.remove();
+    };
+    li.appendChild(deleteButton);
+    scoresList.appendChild(li);
+
+    const csvData = document.getElementById('csvData');
+    if (!csvData.value) {
+        csvData.value = `姓名,${categories.join(',')}\n`;
+    }
+    csvData.value += `${name},${categoryScores.map(score => score.split(': ')[1]).join(',')}\n`;
+    document.getElementById('studentNameInput').value = '';
+    resetAllMenus();
+}
+
+function updateScore(select) {
+    const scoreSpan = select.nextElementSibling;
+    scoreSpan.textContent = select.value;
+    calculateAllCategoryTotals();
+    calculateTotal();
+}
+
+// 初始化页面上已存在的下拉菜单
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('#scienceLevel, #culturalLevel').forEach(select => {
+        updateCompetitionOptions(select, select.id === 'scienceLevel' ? scienceScores : 文体竞赛);
+    });
+    document.querySelectorAll('#实践创新Type').forEach(update实践创新Options);
+    document.querySelectorAll('#人文素质Type').forEach(update人文素质Options);
+    document.querySelectorAll('#honorType').forEach(updateHonorOptions);
+});
+</script>
+</body>
+</html>
